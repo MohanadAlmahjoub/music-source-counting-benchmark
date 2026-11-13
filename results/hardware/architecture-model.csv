@@ -1,0 +1,14 @@
+kernel,iq_bits,assumed_clock_mhz,assumed_stream_bits,real_multiply_lanes,real_multiplications_per_frame,input_bytes,output_bytes,resident_coefficient_bytes,compute_cycles_floor,ingress_cycles_floor,egress_cycles_floor,overlapped_interval_floor_us,serialized_stage_budget_floor_us
+covariance_8x128,12,200,64,8,16384,3072,256,0,2048,384,32,10.24,12.32
+covariance_8x128,12,200,64,32,16384,3072,256,0,512,384,32,2.56,4.64
+covariance_8x128,12,200,64,64,16384,3072,256,0,256,384,32,1.92,3.36
+covariance_8x128,12,200,64,128,16384,3072,256,0,128,384,32,1.92,2.72
+projection_1src_240bins,14,200,64,32,57120,196,16,6720,1785,25,2,8.925,9.06
+projection_1src_240bins,14,200,64,64,57120,196,16,6720,893,25,2,4.465,4.6
+projection_1src_240bins,14,200,64,128,57120,196,16,6720,447,25,2,2.235,2.37
+projection_1src_240bins,14,200,64,256,57120,196,16,6720,224,25,2,1.12,1.255
+projection_1src_240bins,14,200,64,288,57120,196,16,6720,199,25,2,0.995,1.13
+projection_2src_240bins,14,200,64,32,48960,168,16,6720,1530,21,2,7.65,7.765
+projection_2src_240bins,14,200,64,64,48960,168,16,6720,765,21,2,3.825,3.94
+projection_2src_240bins,14,200,64,128,48960,168,16,6720,383,21,2,1.915,2.03
+projection_2src_240bins,14,200,64,256,48960,168,16,6720,192,21,2,0.96,1.075
