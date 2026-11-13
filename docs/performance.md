@@ -33,6 +33,20 @@ On the 300 scalar-MDL frames where scanning was active, prewhitened dense/projec
 
 The Q12 rule needs two additions and three comparisons once supplied with eight sorted, common-scale codes. The measured Python path also normalizes, rounds and clips the eigenvalues. Its count-stage median was 38.55 µs compared with 15.10 µs for scalar MDL and 63.30 µs for vector MDL. Both MDL implementations minimize the same objective over orders 0–3. Scalar MDL shares suffix sums and fixed penalties, using 12 logarithms and three comparisons to choose among four scores. The wall-clock result favors the scalar CPU implementation over the measured Q12 path. The arithmetic counts describe separate mapping options for hardware.
 
+These analytical counts describe the algorithm dimensions. They are neither CPU instruction counts nor cycle measurements.
+
+| Stage | Arithmetic scale for this frame |
+| --- | --- |
+| Snapshot whitening | Dense 128 × 8 by 8 × 8 multiply, up to 8,192 complex products and 7,168 complex additions. A triangular implementation can exploit zeros. |
+| Covariance | The full 8 × 8 product uses 8,192 complex products before scaling. A Hermitian-aware streaming design computes only eight powers and 28 cross-products per snapshot. |
+| Hermitian eigendecomposition | One 8 × 8 solve per frame. Dense work scales cubically with sensor count. The LAPACK path has implementation- and input-dependent work, so no fixed multiply count is assigned. |
+| Scalar MDL | Four orders, eight eigenvalue logs and four suffix-mean logs, plus running sums, penalties and three argmin comparisons. |
+| Noise subspace | The projected scan selects an eigenvector view. For two sources, the dense variant also forms an 8 × 8 projector using 384 complex products. |
+| MUSIC spectrum | For two sources and 240 grid bins, the projected scan uses 11,520 complex products and 1,440 magnitude squares. |
+| Peak selection | The scanner checks up to 238 interior bins and orders the detected minima. The second step depends on the number of local minima. |
+
+Relative to the 164.1 µs uninstrumented median, eigendecomposition accounts for roughly 26% and the spectrum plus peak stages for roughly 43%, using each stage's own median. The stage measurements are separate and the fractions serve as a rough prioritization guide.
+
 ## Memory and numerical agreement
 
 For the whitened projected paths, Python/NumPy traced peaks above baseline were 79,569 bytes for scalar MDL and 79,825 bytes for Q12. These figures exclude fixture buffers, precomputed steering and native allocations that the tracer cannot observe. The Windows lifetime peak working set was 82,223,104 bytes and includes setup, other cases and benchmark output assembly. [Memory samples](../results/profile/memory.csv)
